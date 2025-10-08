@@ -70,6 +70,8 @@ const App: React.FC = () => {
 
     return { totalPreDiscount, discountableTotal, nonDiscountableTotal, discountPercentage };
   }, [invoiceLines, finalAmount]);
+
+  const totalDiscountAmount = finalAmount > 0 && totalPreDiscount > finalAmount ? totalPreDiscount - finalAmount : 0;
   
   const getPriceAfterDiscount = useCallback((line: InvoiceLine) => {
     const lineTotal = line.quantity * line.price;
@@ -139,6 +141,10 @@ const App: React.FC = () => {
                <div className="flex justify-between">
                 <span className="text-slate-600">Sum of Non-Discountable Lines:</span>
                 <span className="font-semibold text-slate-600">{formatCurrency(nonDiscountableTotal)}</span>
+              </div>
+              <div className="flex justify-between border-t border-slate-200 pt-3">
+                <span className="text-slate-600">Total Discount Amount:</span>
+                <span className="font-bold text-red-600">{formatCurrency(totalDiscountAmount)}</span>
               </div>
               <div className="flex justify-between items-center bg-slate-100 p-3 rounded-lg">
                 <label htmlFor="finalAmount" className="font-bold text-slate-800">Final Invoice Amount:</label>
