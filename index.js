@@ -22,6 +22,8 @@ const totalDiscountAmountEl = document.getElementById('total-discount-amount');
 const discountPercentageEl = document.getElementById('discount-percentage');
 const calculatedFinalAmountEl = document.getElementById('calculated-final-amount');
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const themeIconSun = document.getElementById('theme-icon-sun');
+const themeIconMoon = document.getElementById('theme-icon-moon');
 const htmlElement = document.documentElement;
 
 
@@ -39,6 +41,16 @@ function createNewLine() {
 const formatCurrency = (value) => {
     return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(value);
 };
+
+/**
+ * Toggles the visibility of the sun/moon icons based on the theme.
+ * @param {boolean} isDarkMode - True if dark mode is active.
+ */
+function updateThemeIcons(isDarkMode) {
+    themeIconSun.classList.toggle('hidden', !isDarkMode);
+    themeIconMoon.classList.toggle('hidden', isDarkMode);
+}
+
 
 // --- CORE LOGIC & RENDERING ---
 
@@ -174,6 +186,7 @@ function handleLineItemChange(event) {
 function handleThemeToggle() {
     const isDarkMode = htmlElement.classList.toggle('dark');
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    updateThemeIcons(isDarkMode);
 }
 
 // --- INITIALIZATION ---
@@ -185,10 +198,17 @@ function init() {
     invoiceLinesContainer.addEventListener('click', handleLineItemChange);
     themeToggleBtn.addEventListener('click', handleThemeToggle);
     
+    // --- Theme Initialization ---
+    // The initial theme class is now set by a blocking script in index.html.
+    // We just need to read that state to sync the toggle icon.
+    const isDarkModeOnLoad = htmlElement.classList.contains('dark');
+    updateThemeIcons(isDarkModeOnLoad);
+
     // Initial render
     renderAllLines();
     updateCalculationsAndDisplay();
 }
 
-// Run the app
+// Since the script tag uses `defer`, the DOM is guaranteed to be ready,
+// so we can call init() directly.
 init();
