@@ -15,7 +15,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Set theme based ONLY on localStorage to avoid system preference conflicts.
-        // Defaults to light theme if nothing is set.
+        // This runs immediately to prevent a flash of the wrong theme.
         if (localStorage.theme === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
@@ -151,18 +151,5 @@
 
     <script type="module" src="./index.js"></script>
 
-    <script>
-        // Self-contained script to handle theme toggling
-        (() => {
-            const themeToggleBtn = document.getElementById('theme-toggle-btn');
-            if (themeToggleBtn) {
-                const handleThemeToggle = () => {
-                    const isDarkMode = document.documentElement.classList.toggle('dark');
-                    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-                };
-                themeToggleBtn.addEventListener('click', handleThemeToggle);
-            }
-        })();
-    </script>
 </body>
 </html>

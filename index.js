@@ -21,6 +21,9 @@ const totalNonDiscountableEl = document.getElementById('total-non-discountable')
 const totalDiscountAmountEl = document.getElementById('total-discount-amount');
 const discountPercentageEl = document.getElementById('discount-percentage');
 const calculatedFinalAmountEl = document.getElementById('calculated-final-amount');
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const htmlElement = document.documentElement;
+
 
 // --- HELPER FUNCTIONS ---
 function createNewLine() {
@@ -168,6 +171,11 @@ function handleLineItemChange(event) {
     }
 }
 
+function handleThemeToggle() {
+    const isDarkMode = htmlElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+}
+
 // --- INITIALIZATION ---
 function init() {
     // Attach event listeners
@@ -175,6 +183,7 @@ function init() {
     finalAmountInput.addEventListener('input', handleFinalAmountChange);
     invoiceLinesContainer.addEventListener('input', handleLineItemChange);
     invoiceLinesContainer.addEventListener('click', handleLineItemChange);
+    themeToggleBtn.addEventListener('click', handleThemeToggle);
     
     // Initial render
     renderAllLines();
