@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { useState, useMemo, useCallback } from 'react';
-import type { InvoiceLine } from './types';
-import { InvoiceLineRow } from './components/InvoiceLineRow';
-import { PlusIcon } from './components/icons';
+import type { InvoiceLine } from './types.ts';
+import { InvoiceLineRow } from './components/InvoiceLineRow.tsx';
+import { PlusIcon } from './components/icons.tsx';
 
 const createNewLine = (): InvoiceLine => ({
   id: crypto.randomUUID(),

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import type { InvoiceLine } from '../types';
-import { TrashIcon } from './icons';
+import type { InvoiceLine } from '../types.ts';
+import { TrashIcon } from './icons.tsx';
 
 interface InvoiceLineRowProps {
   line: InvoiceLine;
