@@ -5,17 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Invoice Discount Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Set theme on initial load to prevent FOUC (Flash of Unstyled Content)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
 </head>
-<body class="bg-slate-50">
+<body class="bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
 
     <main class="min-h-screen p-4 sm:p-8 max-w-6xl mx-auto">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-slate-800">Invoice Discount Calculator</h1>
-            <p class="text-slate-600 mt-2">Calculate a uniform discount across multiple invoice lines.</p>
+        <header class="mb-8 flex justify-between items-center">
+            <div class="text-left">
+                <h1 class="text-4xl font-bold text-slate-800 dark:text-slate-100">Invoice Discount Calculator</h1>
+                <p class="text-slate-600 dark:text-slate-400 mt-2">Calculate a uniform discount across multiple invoice lines.</p>
+            </div>
+            <button id="theme-toggle-btn" class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle theme">
+                <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
         </header>
 
-        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
-            <div class="hidden sm:grid grid-cols-12 gap-4 items-center mb-2 px-3 text-left text-sm font-semibold text-slate-500 uppercase">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6">
+            <div class="hidden sm:grid grid-cols-12 gap-4 items-center mb-2 px-3 text-left text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase">
                 <div class="col-span-3">Item Name</div>
                 <div class="col-span-1">Qty</div>
                 <div class="col-span-2">Price</div>
@@ -40,30 +58,30 @@
         </div>
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h2 class="text-2xl font-semibold text-slate-700 border-b pb-3 mb-4">Calculation Summary</h2>
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 dark:text-slate-200 border-b dark:border-slate-700 pb-3 mb-4">Calculation Summary</h2>
                 <div class="space-y-3 text-lg">
                     <div class="flex justify-between">
-                        <span class="text-slate-600">Total Pre-Discount:</span>
-                        <span id="total-pre-discount" class="font-bold text-slate-800">€0.00</span>
+                        <span class="text-slate-600 dark:text-slate-300">Total Pre-Discount:</span>
+                        <span id="total-pre-discount" class="font-bold text-slate-800 dark:text-slate-50">€0.00</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-600">Sum of Discountable Lines:</span>
-                        <span id="total-discountable" class="font-semibold text-blue-600">€0.00</span>
+                        <span class="text-slate-600 dark:text-slate-300">Sum of Discountable Lines:</span>
+                        <span id="total-discountable" class="font-semibold text-blue-600 dark:text-blue-400">€0.00</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-600">Sum of Non-Discountable Lines:</span>
-                        <span id="total-non-discountable" class="font-semibold text-slate-600">€0.00</span>
+                        <span class="text-slate-600 dark:text-slate-300">Sum of Non-Discountable Lines:</span>
+                        <span id="total-non-discountable" class="font-semibold text-slate-600 dark:text-slate-400">€0.00</span>
                     </div>
-                    <div class="flex justify-between border-t border-slate-200 pt-3">
-                        <span class="text-slate-600">Total Discount Amount:</span>
-                        <span id="total-discount-amount" class="font-bold text-red-600">€0.00</span>
+                    <div class="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-3">
+                        <span class="text-slate-600 dark:text-slate-300">Total Discount Amount:</span>
+                        <span id="total-discount-amount" class="font-bold text-red-600 dark:text-red-500">€0.00</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-100 p-3 rounded-lg">
-                        <label for="final-amount-input" class="font-bold text-slate-800">Final Invoice Amount:</label>
+                    <div class="flex justify-between items-center bg-slate-100 dark:bg-slate-700/50 p-3 rounded-lg">
+                        <label for="final-amount-input" class="font-bold text-slate-800 dark:text-slate-100">Final Invoice Amount:</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">€</span>
-                            <input id="final-amount-input" type="number" placeholder="0.00" class="w-40 p-2 pl-7 border bg-slate-900 text-slate-50 border-slate-700 rounded-md text-right font-bold focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 dark:text-slate-400">€</span>
+                            <input id="final-amount-input" type="number" placeholder="0.00" class="w-40 p-2 pl-7 border rounded-md text-right font-bold transition bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         </div>
                     </div>
                 </div>
@@ -85,35 +103,35 @@
 
     <!-- Template for a single invoice line -->
     <template id="invoice-line-template">
-        <div class="grid grid-cols-12 gap-2 sm:gap-4 items-center p-3 bg-white border-b border-slate-200 last:border-b-0 first:rounded-t-lg last:rounded-b-lg">
+        <div class="grid grid-cols-12 gap-2 sm:gap-4 items-center p-3 bg-white/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 last:border-b-0 first:rounded-t-lg last:rounded-b-lg">
             <div class="col-span-12 sm:col-span-3">
-                <label class="text-xs text-slate-500 sm:hidden">Item Name</label>
-                <input type="text" placeholder="e.g. Website Development" data-field="name" class="w-full p-2 border bg-slate-900 text-slate-50 border-slate-700 placeholder:text-slate-400 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                <label class="text-xs text-slate-500 dark:text-slate-400 sm:hidden">Item Name</label>
+                <input type="text" placeholder="e.g. Website Development" data-field="name" class="w-full p-2 border rounded-md transition bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 border-slate-300 dark:border-slate-700 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="col-span-4 sm:col-span-1">
-                <label class="text-xs text-slate-500 sm:hidden">Qty</label>
-                <input type="number" value="1" min="0" data-field="quantity" class="w-full p-2 border bg-slate-900 text-slate-50 border-slate-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                <label class="text-xs text-slate-500 dark:text-slate-400 sm:hidden">Qty</label>
+                <input type="number" value="1" min="0" data-field="quantity" class="w-full p-2 border rounded-md transition bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="col-span-8 sm:col-span-2">
-                <label class="text-xs text-slate-500 sm:hidden">Price</label>
+                <label class="text-xs text-slate-500 dark:text-slate-400 sm:hidden">Price</label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">€</span>
-                    <input type="number" value="0" min="0" step="0.01" data-field="price" class="w-full p-2 pl-7 border bg-slate-900 text-slate-50 border-slate-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 dark:text-slate-400">€</span>
+                    <input type="number" value="0" min="0" step="0.01" data-field="price" class="w-full p-2 pl-7 border rounded-md transition bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </div>
             <div class="col-span-4 sm:col-span-2 text-center sm:text-right">
-                <span class="text-xs text-slate-500 block">Line Total</span>
-                <span data-role="line-total" class="font-semibold text-slate-700">€0.00</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 block">Line Total</span>
+                <span data-role="line-total" class="font-semibold text-slate-700 dark:text-slate-200">€0.00</span>
             </div>
             <div class="col-span-4 sm:col-span-2 text-center sm:text-right">
-                <span class="text-xs text-slate-500 block">Discounted</span>
-                <span data-role="line-discounted" class="font-semibold text-green-600">€0.00</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 block">Discounted</span>
+                <span data-role="line-discounted" class="font-semibold text-green-600 dark:text-green-400">€0.00</span>
             </div>
             <div class="col-span-2 sm:col-span-1 flex justify-center items-center">
-                <input type="checkbox" checked data-field="applyDiscount" class="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                <input type="checkbox" checked data-field="applyDiscount" class="h-5 w-5 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500 cursor-pointer bg-slate-50 dark:bg-slate-900">
             </div>
             <div class="col-span-2 sm:col-span-1 flex justify-center items-center">
-                <button data-action="remove" class="text-slate-400 hover:text-red-500 hover:bg-red-100 p-2 rounded-full transition-colors" aria-label="Remove line">
+                <button data-action="remove" class="text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 p-2 rounded-full transition-colors" aria-label="Remove line">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                     </svg>
