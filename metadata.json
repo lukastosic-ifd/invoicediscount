@@ -1,0 +1,5 @@
+{
+  "name": "Invoice Discount Calculator",
+  "description": "An application to calculate a uniform discount percentage across multiple invoice lines based on a final total amount. Easily add, remove, and manage invoice items to determine the precise discount.",
+  "requestFramePermissions": []
+}
